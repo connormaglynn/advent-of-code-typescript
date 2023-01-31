@@ -4,5 +4,13 @@
 ![Prettier](https://img.shields.io/badge/prettier-1A2C34?style=for-the-badge&logo=prettier&logoColor=F7BA3E)
 ![Github Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)
 
-# typescript-template
-a base template for typescript projects
+# 🎁🎅🎄 Advent of Code 🎄🎅🎁
+
+A repository to contain the solutions (more like attempts) for the
+yearly [Advent of Code Challenge](https://adventofcode.com/). Written in Typescript 🚀
+
+## Attempted Years
+
+|                 Year                  | Days Complete (25 Total) |
+|:-------------------------------------:|:------------------------:|
+| [2022](https://adventofcode.com/2022) |            1             |
