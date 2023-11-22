@@ -1,37 +1,18 @@
-import * as console from 'console'
-import * as readline from 'readline'
-import * as fs from 'fs'
-import * as events from 'events'
+import { getFileLinesAsArray } from '../../services/fileService'
+import { GenericArrayService } from '../../services/genericArrayService'
 
-export const calorieCounter = async () => {
-  try {
-    const rl = readline.createInterface({
-      input: fs.createReadStream(__dirname + '/puzzle-1-input.txt'),
-      crlfDelay: Infinity,
-    })
+export const getDayOnePartOneAnswer = async (fileLocation: string) => {
+  const input = new GenericArrayService(await getFileLinesAsArray(fileLocation))
 
-    let largestCalories = 0
-    let currentElfsCalories = 0
-    rl.on('line', (line) => {
-      if (line !== '') {
-        currentElfsCalories += parseInt(line)
-        return
-      }
-      if (currentElfsCalories > largestCalories) {
-        largestCalories = currentElfsCalories
-        currentElfsCalories = 0
-        console.log(`Largest Calories Now: ${largestCalories}`)
-        return
-      }
-    })
+  const elfsCalories = input.splitBySeperator('')
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    await events.once(rl, 'close')
+  const allTotalCalories = new GenericArrayService()
+  elfsCalories.forEach((elfCalories) => {
+    const totalElfCalories = new GenericArrayService(elfCalories)
+      .convertToNumbersArray()
+      .getTotalValue()
+    allTotalCalories.push(String(totalElfCalories))
+  })
 
-    return largestCalories
-  } catch (err) {
-    console.error(err)
-    return
-  }
+  return allTotalCalories.convertToNumbersArray().getLargestItem()
 }

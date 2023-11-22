@@ -9,8 +9,8 @@
 A repository to contain the solutions (more like attempts) for the
 yearly [Advent of Code Challenge](https://adventofcode.com/). Written in Typescript 🚀
 
-## Attempted Years
+## Attempt of [2022](https://adventofcode.com/2022)
 
-|                 Year                  | Days Complete (25 Total) |
-|:-------------------------------------:|:------------------------:|
-| [2022](https://adventofcode.com/2022) |            1             |
+| Days Complete (25 Total) | Answer(s) |
+|:------------------------:|:---------:|
+|    [1](./src/2022/1)     |   71934   | 
