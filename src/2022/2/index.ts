@@ -10,7 +10,50 @@ export const getDayTwoPartOneAnswer = async (fileLocation: string) => {
     )[0] as ROCK_PAPER_SCISSORS_OPPONENT_CHOICE
     const myChoice = game.split(' ')[1] as ROCK_PAPER_SCISSORS_MY_CHOICE
 
-    scoreTotal += convertInputIntoWordsThenPlayGame(opponentChoice, myChoice)
+    const opponentChoiceAsWord = ROCK_PAPER_SCISSORS_OPPONENT_CHOICE_MAP.get(
+      opponentChoice
+    ) as ROCK_PAPER_SCISSORS
+    const myChoiceAsWord = ROCK_PAPER_SCISSORS_MY_CHOICE_MAP.get(
+      myChoice
+    ) as ROCK_PAPER_SCISSORS
+
+    scoreTotal += rockPaperScissorsGameScoreCalculator(
+      opponentChoiceAsWord,
+      myChoiceAsWord
+    )
+  })
+
+  return scoreTotal
+}
+
+export const getDayTwoPartTwoAnswer = async (fileLocation: string) => {
+  const input = await getFileLinesAsArray(fileLocation)
+
+  let scoreTotal = 0
+  input.forEach((game) => {
+    const opponentChoice = game.split(
+      ' '
+    )[0] as ROCK_PAPER_SCISSORS_OPPONENT_CHOICE
+    const desiredResult = game.split(
+      ' '
+    )[1] as ROCK_PAPER_SCISSORS_DESIRED_RESULT
+
+    const opponentChoiceAsWord = ROCK_PAPER_SCISSORS_OPPONENT_CHOICE_MAP.get(
+      opponentChoice
+    ) as ROCK_PAPER_SCISSORS
+    const desiredResultAsWord = ROCK_PAPER_SCISSORS_DESIRED_RESULT_MAP.get(
+      desiredResult
+    ) as DESIRED_RESULT
+
+    const myChoiceAsWord = generateMyChoiceBasedOnDesiredResult(
+      opponentChoiceAsWord,
+      desiredResultAsWord
+    )
+
+    scoreTotal += rockPaperScissorsGameScoreCalculator(
+      opponentChoiceAsWord,
+      myChoiceAsWord
+    )
   })
 
   return scoreTotal
@@ -32,6 +75,24 @@ const ROCK_PAPER_SCISSORS_MY_CHOICE_MAP = new Map([
   ['Y', 'PAPER'],
   ['Z', 'SCISSORS'],
 ])
+
+export enum ROCK_PAPER_SCISSORS_DESIRED_RESULT {
+  X = 'LOSS',
+  Y = 'DRAW',
+  Z = 'WIN',
+}
+
+const ROCK_PAPER_SCISSORS_DESIRED_RESULT_MAP = new Map([
+  ['X', 'LOSS'],
+  ['Y', 'DRAW'],
+  ['Z', 'WIN'],
+])
+
+export enum DESIRED_RESULT {
+  X = 'LOSS',
+  Y = 'DRAW',
+  Z = 'WIN',
+}
 
 const ROCK_PAPER_SCISSORS_OPPONENT_CHOICE_MAP = new Map([
   ['A', 'ROCK'],
@@ -56,21 +117,15 @@ export const PAPER = 'PAPER'
 export const SCISSORS = 'SCISSORS'
 export type ROCK_PAPER_SCISSORS = 'ROCK' | 'PAPER' | 'SCISSORS'
 
-export const convertInputIntoWordsThenPlayGame = (
-  opponentChoice: ROCK_PAPER_SCISSORS_OPPONENT_CHOICE,
-  myChoice: ROCK_PAPER_SCISSORS_MY_CHOICE
+export const generateMyChoiceBasedOnDesiredResult = (
+  opponentChoice: ROCK_PAPER_SCISSORS,
+  desiredOutcome: DESIRED_RESULT
 ) => {
-  const opponentChoiceAsWord = ROCK_PAPER_SCISSORS_OPPONENT_CHOICE_MAP.get(
-    opponentChoice
-  ) as ROCK_PAPER_SCISSORS
-  const myChoiceAsWord = ROCK_PAPER_SCISSORS_MY_CHOICE_MAP.get(
-    myChoice
-  ) as ROCK_PAPER_SCISSORS
+  if (desiredOutcome === 'WIN') return winningChoiceCalculator(opponentChoice)
 
-  return rockPaperScissorsGameScoreCalculator(
-    opponentChoiceAsWord,
-    myChoiceAsWord
-  )
+  if (desiredOutcome === 'LOSS') return losingChoiceCalculator(opponentChoice)
+
+  return opponentChoice
 }
 
 export const rockPaperScissorsGameScoreCalculator = (
@@ -95,4 +150,24 @@ export const rockPaperScissorsGameScoreCalculator = (
 
   score += ROCK_PAPER_SCISSORS_RESULT_VALUE_MAP.get('LOSS')!
   return score as number
+}
+
+export const winningChoiceCalculator = (
+  opponentChoice: ROCK_PAPER_SCISSORS
+): ROCK_PAPER_SCISSORS => {
+  if (opponentChoice === ROCK) return PAPER
+
+  if (opponentChoice === PAPER) return SCISSORS
+
+  return ROCK
+}
+
+export const losingChoiceCalculator = (
+  opponentChoice: ROCK_PAPER_SCISSORS
+): ROCK_PAPER_SCISSORS => {
+  if (opponentChoice === ROCK) return SCISSORS
+
+  if (opponentChoice === PAPER) return ROCK
+
+  return PAPER
 }

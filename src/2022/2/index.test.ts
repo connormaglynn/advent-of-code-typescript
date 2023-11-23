@@ -1,12 +1,13 @@
 import {
-  convertInputIntoWordsThenPlayGame,
+  DESIRED_RESULT,
+  generateMyChoiceBasedOnDesiredResult,
   getDayTwoPartOneAnswer,
+  getDayTwoPartTwoAnswer,
   PAPER,
   ROCK,
-  ROCK_PAPER_SCISSORS_MY_CHOICE,
-  ROCK_PAPER_SCISSORS_OPPONENT_CHOICE,
   rockPaperScissorsGameScoreCalculator,
   SCISSORS,
+  winningChoiceCalculator,
 } from './index'
 
 describe('DAY 2', () => {
@@ -22,6 +23,20 @@ describe('DAY 2', () => {
       __dirname + '/puzzle-2-input-sampled.txt'
     )
     expect(answer).toEqual(15)
+  })
+
+  it('returns answer for part 2', async () => {
+    const answer = await getDayTwoPartTwoAnswer(
+      __dirname + '/puzzle-2-input.txt'
+    )
+    expect(answer).toEqual(13509)
+  })
+
+  it('returns answer for part 2 - sampled', async () => {
+    const answer = await getDayTwoPartTwoAnswer(
+      __dirname + '/puzzle-2-input-sampled.txt'
+    )
+    expect(answer).toEqual(12)
   })
 })
 
@@ -55,77 +70,52 @@ describe('rockPaperScissorsGameScoreCalculator', () => {
   })
 })
 
-describe('convertInputIntoWordsThenPlayGame', () => {
-  it('returns 4 for a DRAW with ROCK', async () => {
+generateMyChoiceBasedOnDesiredResult
+
+describe('generateMyChoiceBasedOnDesiredResult', () => {
+  it('returns opponents choice for DRAW', async () => {
     expect(
-      convertInputIntoWordsThenPlayGame(
-        ROCK_PAPER_SCISSORS_OPPONENT_CHOICE.ROCK,
-        ROCK_PAPER_SCISSORS_MY_CHOICE.ROCK
-      )
-    ).toEqual(4)
+      generateMyChoiceBasedOnDesiredResult(ROCK, 'DRAW' as DESIRED_RESULT)
+    ).toEqual(ROCK)
+    expect(
+      generateMyChoiceBasedOnDesiredResult(PAPER, 'DRAW' as DESIRED_RESULT)
+    ).toEqual(PAPER)
+    expect(
+      generateMyChoiceBasedOnDesiredResult(SCISSORS, 'DRAW' as DESIRED_RESULT)
+    ).toEqual(SCISSORS)
   })
-  it('returns 5 for a DRAW with PAPER', async () => {
+  it('returns winning choice for WIN', async () => {
     expect(
-      convertInputIntoWordsThenPlayGame(
-        ROCK_PAPER_SCISSORS_OPPONENT_CHOICE.PAPER,
-        ROCK_PAPER_SCISSORS_MY_CHOICE.PAPER
-      )
-    ).toEqual(5)
+      generateMyChoiceBasedOnDesiredResult(ROCK, 'WIN' as DESIRED_RESULT)
+    ).toEqual(PAPER)
+    expect(
+      generateMyChoiceBasedOnDesiredResult(PAPER, 'WIN' as DESIRED_RESULT)
+    ).toEqual(SCISSORS)
+    expect(
+      generateMyChoiceBasedOnDesiredResult(SCISSORS, 'WIN' as DESIRED_RESULT)
+    ).toEqual(ROCK)
   })
-  it('returns 6 for a DRAW with SCISSORS', async () => {
-    expect(
-      convertInputIntoWordsThenPlayGame(
-        ROCK_PAPER_SCISSORS_OPPONENT_CHOICE.SCISSORS,
-        ROCK_PAPER_SCISSORS_MY_CHOICE.SCISSORS
-      )
-    ).toEqual(6)
+})
+describe('winningChoiceCalculator', () => {
+  it('returns PAPER to beat ROCK', async () => {
+    expect(winningChoiceCalculator(ROCK)).toEqual(PAPER)
   })
-  it('returns 7 for a WIN with ROCK', async () => {
-    expect(
-      convertInputIntoWordsThenPlayGame(
-        ROCK_PAPER_SCISSORS_OPPONENT_CHOICE.SCISSORS,
-        ROCK_PAPER_SCISSORS_MY_CHOICE.ROCK
-      )
-    ).toEqual(7)
+  it('returns SCISSORS to beat PAPER', async () => {
+    expect(winningChoiceCalculator(PAPER)).toEqual(SCISSORS)
   })
-  it('returns 8 for a WIN with PAPER', async () => {
-    expect(
-      convertInputIntoWordsThenPlayGame(
-        ROCK_PAPER_SCISSORS_OPPONENT_CHOICE.ROCK,
-        ROCK_PAPER_SCISSORS_MY_CHOICE.PAPER
-      )
-    ).toEqual(8)
+  it('returns ROCK to beat SCISSORS', async () => {
+    expect(winningChoiceCalculator(SCISSORS)).toEqual(ROCK)
   })
-  it('returns 9 for a WIN with SCISSORS', async () => {
-    expect(
-      convertInputIntoWordsThenPlayGame(
-        ROCK_PAPER_SCISSORS_OPPONENT_CHOICE.PAPER,
-        ROCK_PAPER_SCISSORS_MY_CHOICE.SCISSORS
-      )
-    ).toEqual(9)
+})
+
+describe('losingChoiceCalculator', () => {
+  it('returns PAPER loses to SCISSORS', async () => {
+    expect(winningChoiceCalculator(PAPER)).toEqual(SCISSORS)
   })
-  it('returns 1 for a LOSS with ROCK', async () => {
-    expect(
-      convertInputIntoWordsThenPlayGame(
-        ROCK_PAPER_SCISSORS_OPPONENT_CHOICE.PAPER,
-        ROCK_PAPER_SCISSORS_MY_CHOICE.ROCK
-      )
-    ).toEqual(1)
+  it('returns SCISSORS loses to ROCK', async () => {
+    expect(winningChoiceCalculator(SCISSORS)).toEqual(ROCK)
   })
-  it('returns 2 for a LOSS with PAPER', async () => {
-    expect(
-      convertInputIntoWordsThenPlayGame(
-        ROCK_PAPER_SCISSORS_OPPONENT_CHOICE.SCISSORS,
-        ROCK_PAPER_SCISSORS_MY_CHOICE.PAPER
-      )
-    ).toEqual(2)
-  })
-  it('returns 3 for a LOSS with SCISSORS', async () => {
-    expect(
-      convertInputIntoWordsThenPlayGame(
-        ROCK_PAPER_SCISSORS_OPPONENT_CHOICE.ROCK,
-        ROCK_PAPER_SCISSORS_MY_CHOICE.SCISSORS
-      )
-    ).toEqual(3)
+  it('returns ROCK loses to PAPER', async () => {
+    expect(winningChoiceCalculator(ROCK)).toEqual(PAPER)
   })
 })
