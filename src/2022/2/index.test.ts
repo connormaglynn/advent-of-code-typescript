@@ -1,14 +1,9 @@
 import {
-  DESIRED_RESULT,
-  generateMyChoiceBasedOnDesiredResult,
   getDayTwoPartOneAnswer,
   getDayTwoPartTwoAnswer,
-  PAPER,
-  ROCK,
   rockPaperScissorsGameScoreCalculator,
-  SCISSORS,
-  winningChoiceCalculator,
 } from './index'
+import { PAPER, ROCK, SCISSORS } from '../../services/rockPaperScissorsService'
 
 describe('DAY 2', () => {
   it('returns answer for part 1', async () => {
@@ -67,55 +62,5 @@ describe('rockPaperScissorsGameScoreCalculator', () => {
   })
   it('returns 3 for a LOSS with SCISSORS', async () => {
     expect(rockPaperScissorsGameScoreCalculator(ROCK, SCISSORS)).toEqual(3)
-  })
-})
-
-generateMyChoiceBasedOnDesiredResult
-
-describe('generateMyChoiceBasedOnDesiredResult', () => {
-  it('returns opponents choice for DRAW', async () => {
-    expect(
-      generateMyChoiceBasedOnDesiredResult(ROCK, 'DRAW' as DESIRED_RESULT)
-    ).toEqual(ROCK)
-    expect(
-      generateMyChoiceBasedOnDesiredResult(PAPER, 'DRAW' as DESIRED_RESULT)
-    ).toEqual(PAPER)
-    expect(
-      generateMyChoiceBasedOnDesiredResult(SCISSORS, 'DRAW' as DESIRED_RESULT)
-    ).toEqual(SCISSORS)
-  })
-  it('returns winning choice for WIN', async () => {
-    expect(
-      generateMyChoiceBasedOnDesiredResult(ROCK, 'WIN' as DESIRED_RESULT)
-    ).toEqual(PAPER)
-    expect(
-      generateMyChoiceBasedOnDesiredResult(PAPER, 'WIN' as DESIRED_RESULT)
-    ).toEqual(SCISSORS)
-    expect(
-      generateMyChoiceBasedOnDesiredResult(SCISSORS, 'WIN' as DESIRED_RESULT)
-    ).toEqual(ROCK)
-  })
-})
-describe('winningChoiceCalculator', () => {
-  it('returns PAPER to beat ROCK', async () => {
-    expect(winningChoiceCalculator(ROCK)).toEqual(PAPER)
-  })
-  it('returns SCISSORS to beat PAPER', async () => {
-    expect(winningChoiceCalculator(PAPER)).toEqual(SCISSORS)
-  })
-  it('returns ROCK to beat SCISSORS', async () => {
-    expect(winningChoiceCalculator(SCISSORS)).toEqual(ROCK)
-  })
-})
-
-describe('losingChoiceCalculator', () => {
-  it('returns PAPER loses to SCISSORS', async () => {
-    expect(winningChoiceCalculator(PAPER)).toEqual(SCISSORS)
-  })
-  it('returns SCISSORS loses to ROCK', async () => {
-    expect(winningChoiceCalculator(SCISSORS)).toEqual(ROCK)
-  })
-  it('returns ROCK loses to PAPER', async () => {
-    expect(winningChoiceCalculator(ROCK)).toEqual(PAPER)
   })
 })
