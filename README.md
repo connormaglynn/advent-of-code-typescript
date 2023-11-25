@@ -14,4 +14,4 @@ yearly [Advent of Code Challenge](https://adventofcode.com/). Written in Typescr
 | Days Complete (25 Total) |   Answer(s)   |
 |:------------------------:|:-------------:|
 |    [1](./src/2022/1)     | 71934, 211447 |
-|    [2](./src/2022/2)     |     13446     | 
+|    [2](./src/2022/2)     |  13446,13509  | 

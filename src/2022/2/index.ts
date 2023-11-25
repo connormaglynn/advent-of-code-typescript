@@ -1,4 +1,8 @@
 import { getFileLinesAsArray } from '../../services/fileService'
+import {
+  ROCK_PAPER_SCISSORS,
+  RockPaperScissorsService,
+} from '../../services/rockPaperScissorsService'
 
 export const getDayTwoPartOneAnswer = async (fileLocation: string) => {
   const input = await getFileLinesAsArray(fileLocation)
@@ -45,10 +49,12 @@ export const getDayTwoPartTwoAnswer = async (fileLocation: string) => {
       desiredResult
     ) as DESIRED_RESULT
 
-    const myChoiceAsWord = generateMyChoiceBasedOnDesiredResult(
-      opponentChoiceAsWord,
-      desiredResultAsWord
-    )
+    const rockPaperScissorsService = new RockPaperScissorsService()
+    const myChoiceAsWord =
+      rockPaperScissorsService.generateMyChoiceBasedOnDesiredResult(
+        opponentChoiceAsWord,
+        desiredResultAsWord
+      )
 
     scoreTotal += rockPaperScissorsGameScoreCalculator(
       opponentChoiceAsWord,
@@ -112,62 +118,23 @@ const ROCK_PAPER_SCISSORS_SHAPE_VALUE_MAP = new Map([
   ['SCISSORS', 3],
 ])
 
-export const ROCK = 'ROCK'
-export const PAPER = 'PAPER'
-export const SCISSORS = 'SCISSORS'
-export type ROCK_PAPER_SCISSORS = 'ROCK' | 'PAPER' | 'SCISSORS'
-
-export const generateMyChoiceBasedOnDesiredResult = (
-  opponentChoice: ROCK_PAPER_SCISSORS,
-  desiredOutcome: DESIRED_RESULT
-) => {
-  if (desiredOutcome === 'WIN') return winningChoiceCalculator(opponentChoice)
-
-  if (desiredOutcome === 'LOSS') return losingChoiceCalculator(opponentChoice)
-
-  return opponentChoice
-}
-
 export const rockPaperScissorsGameScoreCalculator = (
   opponentChoice: ROCK_PAPER_SCISSORS,
   myChoice: ROCK_PAPER_SCISSORS
 ): number => {
-  let score = ROCK_PAPER_SCISSORS_SHAPE_VALUE_MAP.get(myChoice) as number
+  const rockPaperScissorsService = new RockPaperScissorsService()
 
-  if (opponentChoice === myChoice) {
-    score += ROCK_PAPER_SCISSORS_RESULT_VALUE_MAP.get('DRAW')!
-    return score as number
-  }
+  const gameResult = rockPaperScissorsService.getResultForGame(
+    opponentChoice,
+    myChoice
+  )
 
-  if (
-    (opponentChoice === SCISSORS && myChoice === ROCK) ||
-    (opponentChoice === ROCK && myChoice === PAPER) ||
-    (opponentChoice === PAPER && myChoice === SCISSORS)
-  ) {
-    score += ROCK_PAPER_SCISSORS_RESULT_VALUE_MAP.get('WIN')!
-    return score as number
-  }
+  const scoreForChoice = ROCK_PAPER_SCISSORS_SHAPE_VALUE_MAP.get(
+    myChoice
+  ) as number
+  const scoreForResult = ROCK_PAPER_SCISSORS_RESULT_VALUE_MAP.get(
+    gameResult
+  )! as number
 
-  score += ROCK_PAPER_SCISSORS_RESULT_VALUE_MAP.get('LOSS')!
-  return score as number
-}
-
-export const winningChoiceCalculator = (
-  opponentChoice: ROCK_PAPER_SCISSORS
-): ROCK_PAPER_SCISSORS => {
-  if (opponentChoice === ROCK) return PAPER
-
-  if (opponentChoice === PAPER) return SCISSORS
-
-  return ROCK
-}
-
-export const losingChoiceCalculator = (
-  opponentChoice: ROCK_PAPER_SCISSORS
-): ROCK_PAPER_SCISSORS => {
-  if (opponentChoice === ROCK) return SCISSORS
-
-  if (opponentChoice === PAPER) return ROCK
-
-  return PAPER
+  return scoreForChoice + scoreForResult
 }
