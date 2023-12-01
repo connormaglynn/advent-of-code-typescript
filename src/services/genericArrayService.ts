@@ -43,6 +43,14 @@ export class GenericArrayService {
     return new NumberArrayService(numbersArray)
   }
 
+  convertToSingleString() {
+    let string = ''
+    this.array.forEach((item) => {
+      string = string + String(item)
+    })
+    return string
+  }
+
   push(item: string) {
     this.array.push(item)
   }

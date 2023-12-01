@@ -10,11 +10,13 @@ export const getFileLinesAsArray = async (fileLocation: string) => {
     crlfDelay: Infinity,
   })
 
-  rl.on('line', (line) => {
-    lines.push(line)
-  })
-
-  await events.once(rl, 'close')
+  try {
+    rl.on('line', (line) => {
+      lines.push(line)
+    })
+  } finally {
+    await events.once(rl, 'close')
+  }
 
   return lines
 }
