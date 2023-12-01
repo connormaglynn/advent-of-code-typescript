@@ -45,6 +45,11 @@ export class NumberArrayService {
     return this
   }
 
+  removeNegativeNumbers() {
+    this.array = this.array.filter((item) => item >= 0)
+    return this
+  }
+
   push(item: number) {
     this.array.push(item)
   }
