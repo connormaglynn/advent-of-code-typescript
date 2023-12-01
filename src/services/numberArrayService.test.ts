@@ -30,4 +30,23 @@ describe('NumberArrayService', () => {
       expect(numberArrayService.getLargestNumbers(2).array).toEqual([6, 5])
     })
   })
+
+  describe('removeNonNumbers', () => {
+    it('removes NaN values', async () => {
+      const numberArrayService = new NumberArrayService([1, 5, NaN, 4])
+      expect(numberArrayService.removeNonNumbers().array).toEqual([1, 5, 4])
+    })
+  })
+
+  describe('covertToGenericArray', () => {
+    it('coverts to Generic Array', async () => {
+      const numberArrayService = new NumberArrayService([1, 5, NaN, 4])
+      expect(numberArrayService.convertToGenericArray().array).toEqual([
+        '1',
+        '5',
+        'NaN',
+        '4',
+      ])
+    })
+  })
 })

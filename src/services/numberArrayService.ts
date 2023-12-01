@@ -1,3 +1,5 @@
+import { GenericArrayService } from './genericArrayService'
+
 export class NumberArrayService {
   array: number[]
 
@@ -38,7 +40,20 @@ export class NumberArrayService {
     )
   }
 
+  removeNonNumbers() {
+    this.array = this.array.filter((item) => !isNaN(item))
+    return this
+  }
+
   push(item: number) {
     this.array.push(item)
+  }
+
+  convertToGenericArray() {
+    const stringArray: string[] = []
+    this.array.forEach((item) => {
+      stringArray.push(String(item))
+    })
+    return new GenericArrayService(stringArray)
   }
 }

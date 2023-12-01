@@ -49,6 +49,13 @@ describe('GenericArrayService', () => {
     })
   })
 
+  describe('convertToSingleString', () => {
+    it('converts array to string', async () => {
+      const genericArrayService = new GenericArrayService(['1', '5', '6', '4'])
+      expect(genericArrayService.convertToSingleString()).toEqual('1564')
+    })
+  })
+
   describe('removeDuplicates', () => {
     it('returns a new array with no duplicates', async () => {
       const genericArrayService = new GenericArrayService([
