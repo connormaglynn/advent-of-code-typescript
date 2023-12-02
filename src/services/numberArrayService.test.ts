@@ -38,6 +38,15 @@ describe('NumberArrayService', () => {
     })
   })
 
+  describe('removeNegativeNumbers', () => {
+    it('removes Negative Numbers', async () => {
+      const numberArrayService = new NumberArrayService([1, 5, -1, -100, 4])
+      expect(numberArrayService.removeNegativeNumbers().array).toEqual([
+        1, 5, 4,
+      ])
+    })
+  })
+
   describe('covertToGenericArray', () => {
     it('coverts to Generic Array', async () => {
       const numberArrayService = new NumberArrayService([1, 5, NaN, 4])
