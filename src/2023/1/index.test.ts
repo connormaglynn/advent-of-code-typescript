@@ -19,7 +19,7 @@ describe('DAY 1', () => {
     const answer = await getDayOnePartTwoAnswer(
       __dirname + '/puzzle-1-input.txt'
     )
-    expect(answer).toEqual(281)
+    expect(answer).toEqual(54925)
   })
 
   it('returns answer for part 2 - sampled', async () => {

@@ -20,6 +20,6 @@ yearly [Advent of Code Challenge](https://adventofcode.com/). Written in Typescr
 
 ## Attempt of [2023](https://adventofcode.com/2023)
 
-| Days Complete (25 Total) | Answer(s) |
-|:------------------------:|:---------:|
-|    [1](./src/2023/1)     |   55172   |
+| Days Complete (25 Total) |  Answer(s)  |
+|:------------------------:|:-----------:|
+|    [1](./src/2023/1)     | 55172,54925 |

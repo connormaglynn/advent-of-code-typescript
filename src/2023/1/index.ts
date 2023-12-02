@@ -30,17 +30,27 @@ export const getDayOnePartTwoAnswer = async (fileLocation: string) => {
 
   let answer = 0
   collaborations.array.forEach((collaboration) => {
-    const collaborationWithCollaborationValueAsNumericValues =
+    const collaborationWithFirstNumberStringReplaced =
       convertPotentialCollaborationValueToNumericValues(collaboration)
 
-    const numbers = new GenericArrayService(
-      Array.from(collaborationWithCollaborationValueAsNumericValues)
+    const collaborationWithLastNumberStringReplaced =
+      getCollaborationWithLastNumberStringReplaced(collaboration)
+
+    const numbersForFirstValue = new GenericArrayService(
+      Array.from(collaborationWithFirstNumberStringReplaced)
+    )
+      .convertToNumbersArray()
+      .removeNonNumbers().array
+
+    const numbersForSecondValue = new GenericArrayService(
+      Array.from(collaborationWithLastNumberStringReplaced)
     )
       .convertToNumbersArray()
       .removeNonNumbers().array
 
     const collaborationValue = Number(
-      String(numbers[0]) + String(numbers[numbers.length - 1])
+      String(numbersForFirstValue[0]) +
+        String(numbersForSecondValue[numbersForSecondValue.length - 1])
     )
 
     answer += Number(collaborationValue)
@@ -64,39 +74,42 @@ const convertPotentialCollaborationValueToNumericValues = (
     collaboration.indexOf('nine'),
   ])
     .removeNonNumbers()
-    .sortAscending()
-    .removeNegativeNumbers().array
+    .removeNegativeNumbers()
+    .sortAscending().array
 
   const indexOfFirstNumberString = indexesOfAllNumbersStringsAsc[0] as number
 
   const collaborationWithFirstNumberStringReplaced =
     replaceNumberStringToNumericValue(collaboration, indexOfFirstNumberString)
 
-  const indexesOfAllNumbersStringsAsc2 = new NumberArrayService([
-    collaborationWithFirstNumberStringReplaced.indexOf('one'),
-    collaborationWithFirstNumberStringReplaced.indexOf('two'),
-    collaborationWithFirstNumberStringReplaced.indexOf('three'),
-    collaborationWithFirstNumberStringReplaced.indexOf('four'),
-    collaborationWithFirstNumberStringReplaced.indexOf('five'),
-    collaborationWithFirstNumberStringReplaced.indexOf('six'),
-    collaborationWithFirstNumberStringReplaced.indexOf('seven'),
-    collaborationWithFirstNumberStringReplaced.indexOf('eight'),
-    collaborationWithFirstNumberStringReplaced.indexOf('nine'),
+  return collaborationWithFirstNumberStringReplaced
+}
+
+const getCollaborationWithLastNumberStringReplaced = (
+  collaboration: string
+) => {
+  const indexesOfAllNumbersStringsAsc = new NumberArrayService([
+    collaboration.lastIndexOf('one'),
+    collaboration.lastIndexOf('two'),
+    collaboration.lastIndexOf('three'),
+    collaboration.lastIndexOf('four'),
+    collaboration.lastIndexOf('five'),
+    collaboration.lastIndexOf('six'),
+    collaboration.lastIndexOf('seven'),
+    collaboration.lastIndexOf('eight'),
+    collaboration.lastIndexOf('nine'),
   ])
     .removeNonNumbers()
-    .sortAscending()
-    .removeNegativeNumbers().array
+    .removeNegativeNumbers()
+    .sortAscending().array
 
-  const indexOfLastNumberString = indexesOfAllNumbersStringsAsc2[
-    indexesOfAllNumbersStringsAsc2.length - 1
+  const indexOfLastNumberString = indexesOfAllNumbersStringsAsc[
+    indexesOfAllNumbersStringsAsc.length - 1
   ] as number
-  const collaborationWithFirstAndLastNumberStringReplaced =
-    replaceNumberStringToNumericValue(
-      collaborationWithFirstNumberStringReplaced,
-      indexOfLastNumberString
-    )
+  const collaborationWithLastNumberStringReplaced =
+    replaceNumberStringToNumericValue(collaboration, indexOfLastNumberString)
 
-  return collaborationWithFirstAndLastNumberStringReplaced
+  return collaborationWithLastNumberStringReplaced
 }
 
 const replaceNumberStringToNumericValue = (
@@ -113,7 +126,7 @@ const replaceNumberStringToNumericValue = (
     const isMatch = subStringFromKey === key
 
     if (isMatch) {
-      returnValue = stringToReplace.replace(key, value)
+      returnValue = stringToReplace.replace(new RegExp(key, 'g'), value)
     }
   })
 
